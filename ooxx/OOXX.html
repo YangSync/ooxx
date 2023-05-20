@@ -1,0 +1,127 @@
+<html>
+
+<head>
+    <title>Tic Tac Toe</title>
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+
+<body>
+
+    <div id="app">
+        <span>{{message}}</span>
+
+        <table border=2 style="border-collapse:collapse;width:350px;height:350px" bordercolor="#000000">
+
+            <tr>
+                <td v-on:click="click(0,0,$event)" align="center" id="ttt00">{{s00}}</td>
+                <td v-on:click="click(0,1,$event)" align="center" id="ttt01">{{s01}}</td>
+                <td v-on:click="click(0,2,$event)" align="center" id="ttt02">{{s02}}</td>
+            </tr>
+
+            <tr>
+                <td v-on:click="click(1,0,$event)" align="center" id="ttt10">{{s10}}</td>
+                <td v-on:click="click(1,1,$event)" align="center" id="ttt11">{{s11}}</td>
+                <td v-on:click="click(1,2,$event)" align="center" id="ttt12">{{s12}}</td>
+            </tr>
+
+            <tr>
+                <td v-on:click="click(2,0,$event)" align="center" id="ttt20">{{s20}}</td>
+                <td v-on:click="click(2,1,$event)" align="center" id="ttt21">{{s21}}</td>
+                <td v-on:click="click(2,2,$event)" align="center" id="ttt22">{{s22}}</td>
+            </tr>
+
+        </table>
+    </div>
+
+    <script>
+        let end = 0;
+        let i = 0;
+        let t = 0, j = 0;
+        function line(grid) {
+            for (i = 0; i < 3; i++) {
+                if (grid[0][i] + grid[1][i] + grid[2][i] == 3 || grid[i][0] + grid[i][1] + grid[i][2] == 3) {
+                    return 1;
+                }
+                else if (grid[0][i] + grid[1][i] + grid[2][i] == -3 || grid[i][0] + grid[i][1] + grid[i][2] == -3) {
+                    return -1;
+                }
+            }
+            if (grid[0][0] + grid[1][1] + grid[2][2] == 3 || grid[0][2] + grid[1][1] + grid[2][0] == 3) {
+                return 1;
+            }
+            else if (grid[0][0] + grid[1][1] + grid[2][2] == -3 || grid[0][2] + grid[1][1] + grid[2][0] == -3) {
+                return -1;
+            }
+            for (i = 0; i < 3; i++) {
+                for (j = 0; j < 3; j++) {
+                    if (grid[i][j] != 0) {
+                        t = t + 1;
+                    }
+                }
+            }
+            if (t == 9) {
+                alert('tie');
+            }
+            console.log(t);
+            t = 0;
+            return 0;
+        }
+        let player_a = ['O', 'X'];
+        let player_g = [1, -1];
+        let player = 0;
+        let grid = [[0, 0, 0], [0, 0, 0], [0, 0, 0]]
+        const vm = Vue.createApp({
+            data() {
+
+                return {
+                    message: 'turn to O',
+                    s00: '',
+                    s01: '',
+                    s02: '',
+                    s10: '',
+                    s11: '',
+                    s12: '',
+                    s20: '',
+                    s21: '',
+                    s22: '',
+
+                }
+
+            },
+            methods: {
+                click(r, c, event) {
+                    const ss = 's' + r + c;
+                    if (this[ss] == '') {
+                        this[ss] = player_a[player % 2];
+                        grid[r][c] = player_g[player % 2];
+                        end = line(grid);
+                        if (end == 1) {
+                            alert('O win');
+                        }
+                        else if (end == -1) {
+                            alert('X win');
+                        }
+                        player++;
+                        this.message = 'turn to ' + player_a[player % 2];
+                    }
+                    else {
+                        ;
+                    }
+                }
+            }
+        }).mount('#app');
+        //console.log(grid)
+    </script>
+
+    <style>
+        td {
+            font-size: 30pt;
+            width: 50;
+            height: 50;
+        }
+
+        span {
+            font-size: 20pt;
+        }
+    </style>
+</body>
